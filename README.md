@@ -8,7 +8,7 @@ This could lead to better treatments using target drugs as an approach to the ad
 ## Workflow 
 This image below shows the steps of the preprocessing and processing of the datafor the identification of genomic variants and the software needed to this purpose.
 
-![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/figures/Workflow.png) 
+![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow.png) 
 
 ## Content
 This repository has the following organization:
