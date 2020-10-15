@@ -16,7 +16,11 @@ This repository has the following organization:
 ```
 archive
 bin 
+  1_fastqc.sh
+  2_trimmomatic.sh
+  3_bwa.sh
 data 
+  data.md 
 figures
 metadata
 ```
