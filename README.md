@@ -15,10 +15,20 @@ This repository has the following organization:
 
 ```
 1_archive
-2_bin 
-3_data 
+
+2_bin
+    1_fastqc.sh
+    2_trimmomatic.sh
+    3_bwa.sh
+    
+3_data
+    data.md 
+    
 4_figures
+
 5_metadata
+
+README.md
 ```
 
 **1_archive**. This directory have all the non-ready scripts.
