@@ -27,11 +27,11 @@ metadata
 
 **archive**. This directory have all the non-ready scripts.
 
-**bin**. All the scripts needed for the analysis.
+**[bin](/bin)**. All the scripts needed for the analysis.
 
-**data**. This contains all the links for the data files that I used for this workflow.
+**[data](/data)**. This contains all the links for the data files that I used for this workflow.
 
-**figures**. This directory contains all the figures that resulted from this analysis.
+**[figures](/figures)**. This directory contains all the figures that resulted from this analysis.
 
 **metadata**. In this you can find all the tables, figures that are not results but are related to this analysis. 
 
