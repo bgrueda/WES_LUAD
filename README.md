@@ -6,7 +6,7 @@ Since cancer recently have been defined as a genome disease due its genomic inst
 This could lead to better treatments using target drugs as an approach to the adoption of precision medicine.
 
 ## Workflow 
-This image below shows the steps of the preprocessing and processing of the datafor the identification of genomic variants and the software needed to this purpose.
+This image below shows the steps of the preprocessing and processing of the data  for the identification of genomic variants and the software needed for this purpose.
 
 ![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow.png) 
 
@@ -14,27 +14,31 @@ This image below shows the steps of the preprocessing and processing of the data
 This repository has the following organization:
 
 ```
-1_archive
-2_bin 
-3_data 
-4_figures
-5_metadata
+archive
+bin 
+  1_fastqc.sh
+  2_trimmomatic.sh
+  3_bwa.sh
+data 
+  data.md 
+figures
+metadata
 ```
 
-**1_archive**. This directory have all the non-ready scripts.
+**archive**. This directory have all the non-ready scripts.
 
-**2_bin**. All the scripts needed for the analysis.
+**[bin](/bin)**. All the scripts needed for the analysis.
 
-**3_data**. This contains all the links for the data files that I used for this workflow.
+**[data](/data)**. This contains all the links for the data files that I used for this workflow.
 
-**4_figures**. This directory contains all the figures that resulted from this analysis.
+**[figures](/figures)**. This directory contains all the figures that resulted from this analysis.
 
-**5_metadata**. In this you can find all the tables, figures that are not results but are related to this analysis. 
+**metadata**. In this you can find all the tables, figures that are not results but are related to this analysis. 
 
 
 
 ## Data specifications 
-**Date files**
+**Data files**
 1. The data that are needed for this kind of analysis are **fastq files** which are the result of sequencing of your samples (raw data).
 2. A reference genome version (GRCh38). 
 
@@ -42,8 +46,8 @@ This repository has the following organization:
 + **DNA** samples
 + *Tumor and/or normal* tissue
 + *Exon enrichment* 
-+ Sequenced in a NGS plataform (Illumina Hiseq 2000, paired ends)
-+ Calculating an average depth of **30X** approximadetly.  
++ Sequenced in a NGS platform (Illumina Hiseq 2000, paired ends)
++ Calculating an average depth of **30X** approximately.  
 
 ## Requirements and software versions
 - [FastQC (v.0.11.9)](https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc)
