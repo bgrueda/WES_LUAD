@@ -2,15 +2,14 @@
 This is a workflow to analyze WES (*Whole exome sequencing*) data in therms of the genomic variants identification.
 
 ## Motivation 
-Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete lanscape of mutations became one of the most important aspects to undesrstand the particular carcinogenic process of the tumor.
+Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete lanscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way. Likewise, identifying similarities and differences in relation to subtype, risk factors and even associated with populations is crucial.  
 This could lead to better treatments using target drugs as an approach to the adoption of precision medicine.
 
 ## Workflow 
 This image below shows the steps of the preprocessing and processing of the data  for the identification of genomic variants and the software needed for this purpose.
+![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow.pg) 
 
-![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow.png) 
-
-## Content
+## Contentj
 This repository has the following organization:
 
 ```
