@@ -2,7 +2,15 @@
 This is a workflow to analyze WES (*Whole exome sequencing*) data in therms of the genomic variants identification.
 
 ## Motivation
-Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete landscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way. Likewise, identifying similarities and differences in relation to subtype, risk factors and even associated with populations is crucial. particular tumor, as well as differences between types, risk factors and even the origin of the population.
+
+Lung cancer is one of the most common types of cancer and its importance is associated to the high mortality of this disease. Lung adenocarcinoma is the most common subtype of lung cancer.
+
+![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/lung_cancer.jpg)
+
+Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete landscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way. 
+
+Likewise, identifying similarities and differences in relation to subtype, risk factors and even associated with populations is crucial. particular tumor, as well as differences between types, risk factors and even the origin of the population.
+
 This could lead to better treatments using target drugs as an approach to the adoption of precision medicine.
 
 ## Workflow
@@ -30,7 +38,7 @@ figures
 metadata
 ```
 
-**archive(/archive)**. This directory have all the non-ready scripts.
+**[archive](/archive)**. This directory have all the non-ready scripts.
 
 **[bin](/bin)**. All the scripts needed for the analysis.
 
@@ -38,7 +46,7 @@ metadata
 
 **[figures](/figures)**. This directory contains all the figures that resulted from this analysis.
 
-**metadata(/metadata)**. In this you can find all the tables, figures that are not results but are related to this analysis.
+**[metadata](/metadata)**. In this you can find all the tables, figures that are not results but are related to this analysis.
 
 
 
