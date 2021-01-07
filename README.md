@@ -2,7 +2,7 @@
 This is a workflow to analyze WES (*Whole exome sequencing*) data in therms of the genomic variants identification.
 
 ## Motivation
-Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete lanscape of mutations became one of the most important aspects to undesrstand the particular carcinogenic process of the tumor.
+Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete landscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way. Likewise, identifying similarities and differences in relation to subtype, risk factors and even associated with populations is crucial. particular tumor, as well as differences between types, risk factors and even the origin of the population.
 This could lead to better treatments using target drugs as an approach to the adoption of precision medicine.
 
 ## Workflow
@@ -15,20 +15,22 @@ This repository has the following organization:
 
 ```
 archive
+
 bin
   1_fastqc.sh
   2_trimmomatic.sh
   3_bwa.sh
-  4_MarkDuplicates.sh
-  5_Depth_Coverage.sh
-  6_BaseRecalibration.sh
+  4_Preprocessing.sh
+
 data
   data.md
+  
 figures
+
 metadata
 ```
 
-**archive**. This directory have all the non-ready scripts.
+**archive(/archive)**. This directory have all the non-ready scripts.
 
 **[bin](/bin)**. All the scripts needed for the analysis.
 
@@ -36,7 +38,7 @@ metadata
 
 **[figures](/figures)**. This directory contains all the figures that resulted from this analysis.
 
-**metadata**. In this you can find all the tables, figures that are not results but are related to this analysis.
+**metadata(/metadata)**. In this you can find all the tables, figures that are not results but are related to this analysis.
 
 
 
@@ -56,6 +58,6 @@ metadata
 - [FastQC (v.0.11.9)](https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc)
 - [Trimmomatic (v.0.39)](http://www.usadellab.org/cms/?page=trimmomatic)
 - [BWA (v.0.7.12-r1039)](https://sourceforge.net/projects/bio-bwa/)
-- [GATK (v.4.1.8.0)](https://github.com/broadinstitute/gatk/releases)
+- [GATK (v.4.1.9.0)](https://github.com/broadinstitute/gatk/releases)
 - [Samtools (v.1.10)](https://sourceforge.net/projects/samtools/)
 - [R (v.3.4.2)](https://cran.r-project.org)
