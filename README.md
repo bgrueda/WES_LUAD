@@ -7,7 +7,7 @@ Lung cancer is one of the most common types of cancer and its importance is asso
 
 ![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/lung_cancer.jpg)
 
-Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete landscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way. 
+Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete landscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way.
 
 Likewise, identifying similarities and differences in relation to subtype, risk factors and even associated with populations is crucial. particular tumor, as well as differences between types, risk factors and even the origin of the population.
 
@@ -22,20 +22,35 @@ This image below shows the steps of the preprocessing and processing of the data
 This repository has the following organization:
 
 ```
-archive
+|-- archive
+|   |-archive.md
+|
+|-- bin
+|   |-- 1_fastqc.sh
+|   |-- 2_trimmomatic.sh
+|   |-- 3_bwa.sh
+|   |__ 4_Preprocessing.sh
+|
+|-- data
+|   |-- data.md
+|  
+|-- figures
+|   |-- figures.md
+|
+|-- metadata
+|   |-- metadata.md
+|
+|__ results
+    |-- preprocessing
+    |    |__ BQSR
+    |    |-- coverage_and_depth
+    |    |__ duplicates
+    |    |__ preprocessing.md  
+    |-- mapped
+    |    |__ mapped.md
+    |__ trimmed
+         |__ trimmed.md
 
-bin
-  1_fastqc.sh
-  2_trimmomatic.sh
-  3_bwa.sh
-  4_Preprocessing.sh
-
-data
-  data.md
-  
-figures
-
-metadata
 ```
 
 **[archive](/archive)**. This directory have all the non-ready scripts.
@@ -69,3 +84,16 @@ metadata
 - [GATK (v.4.1.9.0)](https://github.com/broadinstitute/gatk/releases)
 - [Samtools (v.1.10)](https://sourceforge.net/projects/samtools/)
 - [R (v.3.4.2)](https://cran.r-project.org)
+
+## References
++ Genomic Landscape of Non-Small Cell Lung Cancer in Smokers and Never-Smokers
+Ramaswamy Govindan, Li Ding, Malachi Griffith, Janakiraman Subramanian, Nathan D. Dees, Krishna L. Kanchi, Christopher A. Maher, Robert Fulton, Lucinda Fulton, John Wallis, … Richard K. Wilson
+Cell (2012-09) https://doi.org/f39hs4
+DOI: 10.1016/j.cell.2012.08.024 · PMID: 22980976 · PMCID: PMC3656590  
+
++ Scalable Open Science Approach for Mutation Calling of Tumor Exomes Using Multiple Genomic Pipelines
+Kyle Ellrott, Matthew H. Bailey, Gordon Saksena, Kyle R. Covington, Cyriac Kandoth, Chip Stewart, Julian Hess, Singer Ma, Kami E. Chiotti, Michael McLellan, … Armaz Mariamidze
+Cell Systems (2018-03) https://doi.org/gf9twn
+DOI: 10.1016/j.cels.2018.03.002 · PMID: 29596782 · PMCID: PMC6075717
+
++ Some more information is available in: https://gatk.broadinstitute.org/hc/en-us
