@@ -63,7 +63,7 @@ This repository has the following organization:
 
 **[metadata](/metadata)**. In this you can find all the tables, figures that are not results but are related to this analysis.
 
-
+**[results](/results)**. This directory contains all the results from the pipeline.
 
 ## Data specifications
 **Data files**
