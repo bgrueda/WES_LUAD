@@ -30,6 +30,7 @@ This repository has the following organization:
 |   |-- 2_Correction.sh
 |   |-- 3_Mapping.sh
 |   |-- 4_Preprocessing.sh
+|   |-- 4.1_depth.R
 |   |__ 5_Somatic_Var.sh
 |
 |--- data
@@ -57,6 +58,8 @@ This repository has the following organization:
          |__ somatic_var.md
 
 ```
+
+**[Workflow_Tutorial.md]()** This file contains all the information for the use of the scripts in this repository.  
 
 **[archive](/archive)**. This directory have all the non-ready scripts.
 
