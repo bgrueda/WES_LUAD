@@ -5,7 +5,7 @@ This is a workflow to analyze WES (*Whole exome sequencing*) data in therms of t
 
 Lung cancer is one of the most common types of cancer and its importance is associated to the high mortality of this disease. Lung adenocarcinoma is the most common subtype of lung cancer.
 
-![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/lung_cancer.jpg)
+![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/figures/lung_cancer.jpg)
 
 Since cancer recently have been defined as a genome disease due its genomic instability, knowing a more complete landscape of mutations became one of the most important aspects to understand the particular carcinogenic process of each tumor in a more precise way.
 
@@ -16,7 +16,7 @@ This could lead to better treatments using target drugs as an approach to the ad
 ## Workflow
 This image below shows the steps of the preprocessing and processing of the data  for the identification of genomic variants and the software needed for this purpose.
 
-![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow.jpg)
+![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/figures/Workflow.jpg)
 
 ## Content
 This repository has the following organization:

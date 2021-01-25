@@ -15,6 +15,8 @@ samtools coverage $i -o ../results/coverage/cov_${i%.bam}.txt 2>c_${i%.sam}.log;
 samtools coverage -m $i -o ../results/coverage/hist_${i%.bam}.txt 2>h_${i%.sam}.log;
 done
 
+# For the plot of the depth, run depth.R script. 
+
 # Mark duplicates in the bam files
 for i in sort*.bam;
 do java -jar picard.jar MarkDuplicates I=$i O=md_$i M=metrics_$i.txt 2>md_${i%.bam}.log;
