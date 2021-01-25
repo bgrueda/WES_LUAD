@@ -22,34 +22,39 @@ This image below shows the steps of the preprocessing and processing of the data
 This repository has the following organization:
 
 ```
-|-- archive
-|   |-archive.md
+|--- archive
+|   |-- archive.md
 |
-|-- bin
-|   |-- 1_fastqc.sh
-|   |-- 2_trimmomatic.sh
-|   |-- 3_bwa.sh
-|   |__ 4_Preprocessing.sh
+|--- bin
+|   |-- 1_Quality.sh
+|   |-- 2_Correction.sh
+|   |-- 3_Mapping.sh
+|   |-- 4_Preprocessing.sh
+|   |__ 5_Somatic_Var.sh
 |
-|-- data
+|--- data
 |   |-- data.md
 |  
-|-- figures
+|--- figures
 |   |-- figures.md
 |
-|-- metadata
+|--- metadata
 |   |-- metadata.md
 |
-|__ results
-    |-- preprocessing
-    |    |__ BQSR
+|___ results
+    |-- 1_Quality
+    |    |__ quality.md
+    |-- 2_Correction
+    |    |__ correction.md
+    |-- 3_Mapping
+    |    |__ mapping.md
+    |-- 4_Preprocessing
+    |    |-- BQSR
     |    |-- coverage_and_depth
-    |    |__ duplicates
+    |    |-- duplicates
     |    |__ preprocessing.md  
-    |-- mapped
-    |    |__ mapped.md
-    |__ trimmed
-         |__ trimmed.md
+    |__ 5_Somatic_Var
+         |__ somatic_var.md
 
 ```
 
