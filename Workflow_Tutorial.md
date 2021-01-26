@@ -88,7 +88,11 @@ do samtools view -Sb $i > ${i%.sam}.bam 2>sb${i%.sam}.log | samtools sort ${i%.s
 done
 ```
 
-*depth and coverage*
+
+
+*a. depth and coverage*
+
+For this kind of analysis we use the **Samtools** suite.
 
 ```bash
 for i in *.bam;
@@ -102,17 +106,57 @@ The content of the files are:
 
 + *depth.txt*
 
-  ![depth](https://github.com/bgrueda/WES_LUAD/blob/main/figures/depth.png)
+  ```bash
+  ==> st_depth_nozero.txt <==
+  chr1	825421	1
+  chr1	825422	1
+  chr1	825423	1
+  chr1	825424	1
+  chr1	825425	1
+  chr1	825426	1
+  chr1	825427	1
+  chr1	825428	1
+  chr1	825429	1
+  chr1	825430	1
+  ```
 
 + *cov.txt*
 
-  ![cov](https://github.com/bgrueda/WES_LUAD/blob/main/figures/cov.png)
+  ```bash
+  ==> st_cov_data.txt <==
+  #rname	startpos	endpos	numreads	covbases	coverage	meandepth	meanbaseq	meanmapq
+  chr1	1	248956422	9654	753636	0.302718	0.00380098	66	58.4
+  chr2	1	242193529	6476	508264	0.209859	0.00260629	66.3	58.9
+  chr3	1	198295559	5694	448883	0.226371	0.00281306	66.3	59.4
+  chr4	1	190214555	3575	280702	0.147571	0.00182409	66.4	58.5
+  chr5	1	181538259	4068	319171	0.175815	0.00219193	66.3	58.8
+  chr6	1	170805979	4112	322905	0.189048	0.00235587	66.3	56.5
+  chr7	1	159345973	4492	356067	0.223455	0.0027579	66.3	57.3
+  chr8	1	145138636	3241	256371	0.176639	0.00217759	66.2	57.2
+  chr9	1	138394717	3881	306134	0.221204	0.00275086	65.9	58.6
+  chr10	1	133797422	3892	306022	0.22872	0.002845	66.2	58.4
+  
+  ```
 
 + *hist.txt*
 
-  ![depth](https://github.com/bgrueda/WES_LUAD/blob/main/figures/hist.png)
+  ```bash
+  ==> st_cov.txt <==
+  chr1 (248.96Mbp)
+  >   0.87% │                               █                  │ Number of reads: 9654
+  >   0.77% │                              ██                  │     (1 filtered)
+  >   0.68% │   ▅    ▁                     ██                  │ Covered bases:   753.6Kbp
+  >   0.58% │   █ ▄  █                     ██                  │ Percent covered: 0.3027%
+  >   0.48% │▄ ▁███  █                     ██▇       ▅▃        │ Mean coverage:   0.0038x
+  >   0.39% │█▃████▆▇█▁            ▂       ███       ██   ▄    │ Mean baseQ:      66
+  >   0.29% │██████████▇           █       ███       ██   █▂   │ Mean mapQ:       58.4
+  >   0.19% │███████████       ▃  ▃█      ▆███▄▄▁▆   ██▂  ███ ▆│ 
+  >   0.10% │███████████▇▇▆▁▄ ▄█ ▃███▁    ████████▁ ▁███▄▇███▂█│ Histo bin width: 4.98Mbp
+  >   0.00% │████████████████▆██▅█████▁  ▁█████████▄███████████│ Histo max bin:   0.96766%
+            1       49.79M    99.58M   149.37M   199.17M    248.96M 
+  ```
 
-
+  
 
 For the depth files you can construct a plot to better visualization.
 
@@ -142,4 +186,103 @@ dev.off()
 ```
 
 ![Rplot](https://github.com/bgrueda/WES_LUAD/blob/main/figures/depth.jpeg)
+
+
+
+*b. Mark duplicates*
+
+The duplicates are ...To identify the duplicates we use the tool *MarkDuplicates* from **Picard**.
+
+```bash
+for i in sort*.bam;
+do java -jar picard.jar MarkDuplicates I=$i O=md_$i M=metrics_$i.txt 2>md_${i%.bam}.log;
+done
+```
+
+
+
+*c. BQSR (Base Quality Score Recalibration)*
+
+For this recalibration 
+
+```bash
+for i in md_*;
+do gatk BaseRecalibrator -I $i -R hg38.fasta --known-sites snp_hg38.vcf -O br_$i 2>md_${i%.txt}.log; 
+done
+
+for i in br_*;
+do gatk ApplyBQSR -R hg38.fasta -I $i --bqsr-recal-file xBQSR_table_$i -O $i-BQSR.bam; 
+done
+```
+
+
+
+#### 5_Somatic_Var.sh
+
+```bash
+for i in BQSR*; 
+do gatk Mutect2 -R hg38.fasta -I ${i%BQSR_} -O ${i%BQSR_}.vcf 2>Mut${i%BQSR_}.log;
+done
+```
+
+
+
+##### *Annotation*
+
+For the visualization of the annotated vcf file, we run the next script. 
+
+*maf_vis.R*
+
+```bash
+setwd("~/bin")
+
+library(maftools)
+
+# To call the data from the vcf file
+xann = read.maf(maf = "file.maf")
+xann
+
+# To make the summary of the data in a separate table
+getSampleSummary(xann)
+getGeneSummary(xann)
+getFields(xann)
+write.mafSummary(maf = xann, basename = 'xann')
+
+# To make a summary plot of the vcf data
+plotmafSummary(maf = xann, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = FALSE + scale_color_viridis(discrete = TRUE, option = "D"))
+```
+
+```bash
+==> geneSummary.txt
+Hugo_Symbol Frame_Shift_Del Frame_Shift_Ins In_Frame_Del In_Frame_Ins Missense_Mutation Nonsense_Mutation Nonstop_Mutation Splice_Site total MutatedSamples AlteredSamples
+MUC16	0	0	0	0	9	0	0	0	9	1	1
+TTN	0	1	0	0	5	0	0	1	7	1	1
+KLC1	1	0	0	0	4	0	0	1	6	1	1
+
+==> sampleSummary.txt
+Tumor_Sampe_Barcode	Frame_Shift_Del	Frame_Shift_Ins	In_Frame_Del	In_Frame_Ins	Missense_Mutation	Nonsense_Mutation	Nonstop_Mutation	Splice_Site	total
+__UNKNOWN__	20	63	15	25	1264	51	3	65	1506
+
+==> summary.txt
+ID	summary	Mean	Median
+NCBI_Build	hg38	NA	NA
+Center	__UNKNOWN__	NA	NA
+Samples	1	NA	NA
+nGenes	1236	NA	NA
+Frame_Shift_Del	20	20	20
+Frame_Shift_Ins	63	63	63
+In_Frame_Del	15	15	15
+In_Frame_Ins	25	25	25
+Missense_Mutation	1264	1264	1264
+Nonsense_Mutation	51	51	51
+Nonstop_Mutation	3	3	3
+Splice_Site	65	65	65
+total	1506	1506	1506
+```
+
+![Image](https://github.com/bgrueda/WES_LUAD/blob/main/figures/summary_vcf.jpeg)
+
+
+
+
 
