@@ -59,7 +59,7 @@ This repository has the following organization:
 
 ```
 
-**[Workflow_Tutorial.md]()** This file contains all the information for the use of the scripts in this repository.  
+**[Workflow_Tutorial.md](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow_Tutorial.md)** This file contains all the information for the use of the scripts in this repository.  
 
 **[archive](/archive)**. This directory have all the non-ready scripts.
 
