@@ -229,6 +229,19 @@ done
 
 ##### *Annotation*
 
+```bash
+# This command line allows you to download the data for annotation from teh Broad Institute Resources.
+gatk FuncotatorDataSourceDownloader --somatic --validate-integrity --extract-after-download
+
+# Then do the annotation with an MAF file output
+for i in Mut*;
+do gatk Funcotator -R hg38.fasta -V $i -O $i.maf --output-file-format MAF --data-sources-path ~/metadata/dataSources --ref-version hg38; 
+done
+
+```
+
+
+
 For the visualization of the annotated vcf file, we run the next script. 
 
 *maf_vis.R*
@@ -249,7 +262,10 @@ getFields(xann)
 write.mafSummary(maf = xann, basename = 'xann')
 
 # To make a summary plot of the vcf data
-plotmafSummary(maf = xann, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = FALSE + scale_color_viridis(discrete = TRUE, option = "D"))
+plotmafSummary(maf = xann, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = FALSE)
+
+# Makes the top 10 genes affected from the total of the samples
+oncoplot(maf = xann, top = 10)
 ```
 
 ```bash
@@ -282,7 +298,7 @@ total	1506	1506	1506
 
 ![Image](https://github.com/bgrueda/WES_LUAD/blob/main/figures/summary_vcf.jpeg)
 
-
+![onco](https://github.com/bgrueda/WES_LUAD/blob/main/figures/samples.jpeg)
 
 
 
