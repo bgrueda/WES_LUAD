@@ -1,6 +1,6 @@
 # Workflow for the genomic variants identification
 
-This workflow allows to identify genomic variants (germline and somatic) with some easy following steps. 
+This workflow allows to identify genomic variants (germline and somatic) with some easy following steps.
 
 #### 1_Quality.sh
 
@@ -12,7 +12,7 @@ do fastqc $i;
 done
 ```
 
-once the report files were created, move them to a separate directory with: 
+once the report files were created, move them to a separate directory with:
 
 ```bash
 mkdir FastQC_Reports
@@ -26,11 +26,11 @@ our report will contain some graphics with a colored signaling about:
 + Per sequence quality scores
 + Per base sequence content
 + Per base GC content
-+ Per sequence GC content 
++ Per sequence GC content
 + Per base N content
 + Sequence Lenght Distribution
 + Sequence Duplication Levels
-+ Overrepresented sequences 
++ Overrepresented sequences
 + Kmer Content
 
 More details in: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
@@ -55,11 +55,11 @@ The options should be chosen according to the state of the quality of the readin
 
 #### 3_Mapping.sh
 
-For the alignment to a reference genome we use **bwa** and a *fasta* file of the reference genome. We firstly needs to create an index or download it from the same web page source. 
+For the alignment to a reference genome we use **bwa** and a *fasta* file of the reference genome. We firstly needs to create an index or download it from the same web page source.
 
-The Broad Institute's genomics public data is available in: 
+The Broad Institute's genomics public data is available in:
 
-https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false 
+https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false
 
 ```bash
 bwa index hg38.fasta
@@ -68,7 +68,7 @@ do bwa mem hg38.fasta $i ${i%1.fastq}2.fastq > aln_${i%R1.fastq}.sam 2>bwa_${i%R
 done &
 ```
 
-The output of this tool is a *SAM file*. 
+The output of this tool is a *SAM file*.
 
 
 
@@ -80,7 +80,7 @@ This step is divided in three parts:
 + Mark duplicates
 + BQSR
 
-The first thing to do is changing the *SAM file* to its binary *BAM file* in order to have more efficient management. 
+The first thing to do is changing the *SAM file* to its binary *BAM file* in order to have more efficient management.
 
 ```bash
 for i in aln*;
@@ -102,7 +102,7 @@ samtools coverage -m $i -o ../results/coverage/hist_${i%.bam}.txt 2>h_${i%.sam}.
 done
 ```
 
-The content of the files are: 
+The content of the files are:
 
 + *depth.txt*
 
@@ -135,7 +135,7 @@ The content of the files are:
   chr8	1	145138636	3241	256371	0.176639	0.00217759	66.2	57.2
   chr9	1	138394717	3881	306134	0.221204	0.00275086	65.9	58.6
   chr10	1	133797422	3892	306022	0.22872	0.002845	66.2	58.4
-  
+
   ```
 
 + *hist.txt*
@@ -150,21 +150,22 @@ The content of the files are:
   >   0.48% │▄ ▁███  █                     ██▇       ▅▃        │ Mean coverage:   0.0038x
   >   0.39% │█▃████▆▇█▁            ▂       ███       ██   ▄    │ Mean baseQ:      66
   >   0.29% │██████████▇           █       ███       ██   █▂   │ Mean mapQ:       58.4
-  >   0.19% │███████████       ▃  ▃█      ▆███▄▄▁▆   ██▂  ███ ▆│ 
+  >   0.19% │███████████       ▃  ▃█      ▆███▄▄▁▆   ██▂  ███ ▆│
   >   0.10% │███████████▇▇▆▁▄ ▄█ ▃███▁    ████████▁ ▁███▄▇███▂█│ Histo bin width: 4.98Mbp
   >   0.00% │████████████████▆██▅█████▁  ▁█████████▄███████████│ Histo max bin:   0.96766%
-            1       49.79M    99.58M   149.37M   199.17M    248.96M 
+            1       49.79M    99.58M   149.37M   199.17M    248.96M
   ```
 
-  
+
 
 For the depth files you can construct a plot to better visualization.
 
+*4.1_depth.R*
 ```R
 setwd("~/bin")
 
 # Call the file with the depth information from samtools depth command.
-tab <- read.table ("depth.txt", 
+tab <- read.table ("depth.txt",
                    header= F)
 attach (tab)
 names (tab)
@@ -177,9 +178,9 @@ x <- c(V2)
 y <- c(V3)
 
 # Make the plot
-plot (x,y, 
+plot (x,y,
       main="Depth",
-      col= 'navy', 
+      col= 'navy',
       type= "l")
 
 dev.off()
@@ -203,15 +204,15 @@ done
 
 *c. BQSR (Base Quality Score Recalibration)*
 
-For this recalibration 
+For this recalibration
 
 ```bash
 for i in md_*;
-do gatk BaseRecalibrator -I $i -R hg38.fasta --known-sites snp_hg38.vcf -O br_$i 2>md_${i%.txt}.log; 
+do gatk BaseRecalibrator -I $i -R hg38.fasta --known-sites snp_hg38.vcf -O br_$i 2>md_${i%.txt}.log;
 done
 
 for i in br_*;
-do gatk ApplyBQSR -R hg38.fasta -I $i --bqsr-recal-file xBQSR_table_$i -O $i-BQSR.bam; 
+do gatk ApplyBQSR -R hg38.fasta -I $i --bqsr-recal-file xBQSR_table_$i -O $i-BQSR.bam;
 done
 ```
 
@@ -220,7 +221,7 @@ done
 #### 5_Somatic_Var.sh
 
 ```bash
-for i in BQSR*; 
+for i in BQSR*;
 do gatk Mutect2 -R hg38.fasta -I ${i%BQSR_} -O ${i%BQSR_}.vcf 2>Mut${i%BQSR_}.log;
 done
 ```
@@ -235,18 +236,18 @@ gatk FuncotatorDataSourceDownloader --somatic --validate-integrity --extract-aft
 
 # Then do the annotation with an MAF file output
 for i in Mut*;
-do gatk Funcotator -R hg38.fasta -V $i -O $i.maf --output-file-format MAF --data-sources-path ~/metadata/dataSources --ref-version hg38; 
+do gatk Funcotator -R hg38.fasta -V $i -O $i.maf --output-file-format MAF --data-sources-path ~/metadata/dataSources --ref-version hg38;
 done
 
 ```
 
 
 
-For the visualization of the annotated vcf file, we run the next script. 
+For the visualization of the annotated vcf file, we run the next script.
 
-*maf_vis.R*
+*5.1_maf_vis.R*
 
-```bash
+```R
 setwd("~/bin")
 
 library(maftools)
@@ -299,6 +300,3 @@ total	1506	1506	1506
 ![Image](https://github.com/bgrueda/WES_LUAD/blob/main/figures/summary_vcf.jpeg)
 
 ![onco](https://github.com/bgrueda/WES_LUAD/blob/main/figures/samples.jpeg)
-
-
-

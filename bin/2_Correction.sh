@@ -16,11 +16,11 @@ do java -jar /route/trimmomatic-0.39.jar PE -phred33 $i ${i%?.fastq}2.fastq trim
 done
 
 mkdir ./../results/trimmed
-mv trimmed* unpaired* ./../results/trimmed/
+mv trimmed* unpaired* ./../results/2_Correction/
 
 # Then is needed to run Fastqc again in order to check the quality of the files after the cleanning.
 
-for i in ./../results/trimmed/trimmed*;
+for i in ./../results/2_Correction/trimmed*;
 do fastqc $i;
 done
 

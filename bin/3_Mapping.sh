@@ -10,9 +10,6 @@ bwa index ./../data/hg38.fasta
 mv *.fai ./../data/
 
 # Do the alignment with the trimmed files.
-for i in ./../trimmed*R1.fastq;
-do bwa mem ./../data/hg38.fasta $i ${i%1.fastq}2.fastq > aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
+for i in ./../results/2_Correction/trimmed*R1.fastq;
+do bwa mem ./../data/hg38.fasta $i ${i%1.fastq}2.fastq > ./../results/3_Mapping/aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
 done &
-
-mkdir ./../results/mapped
-mv aln* ./../results/mapped

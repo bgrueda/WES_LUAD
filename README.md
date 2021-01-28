@@ -14,7 +14,7 @@ Likewise, identifying similarities and differences in relation to subtype, risk 
 This could lead to better treatments using target drugs as an approach to the adoption of precision medicine.
 
 ## Workflow
-This image below shows the steps of the preprocessing and processing of the data  for the identification of genomic variants and the software needed for this purpose.
+This image below shows the steps of the preprocessing and processing of the data  for the identification of genomic variants and the scripts needed for this purpose.
 
 ![IMAGE](https://github.com/bgrueda/WES_LUAD/blob/main/figures/Workflow.jpg)
 
@@ -28,7 +28,8 @@ This repository has the following organization:
 |   |-- 3_Mapping.sh
 |   |-- 4_Preprocessing.sh
 |   |-- 4.1_depth.R
-|   |__ 5_Somatic_Var.sh
+|   |-- 5_Somatic_Var.sh
+|   |__ 5.1_maf_vis.R
 |
 |--- data
 |   |-- data.md
@@ -38,18 +39,35 @@ This repository has the following organization:
 |
 |___ results
     |-- 1_Quality
-    |    |__ quality.md
+    |    |__ fastqc_report.html
+    |
     |-- 2_Correction
     |    |__ correction.md
+    |
     |-- 3_Mapping
-    |    |__ mapping.md
+    |    |-- aln_example.sam
+    |    |__ sort_example.bam
+    |    
     |-- 4_Preprocessing
     |    |-- BQSR
+    |    |    |-- BQSR_example.bai
+    |    |    |-- BQSR_example.bam
+    |    |    |-- BQSR_example.table
+    |    |    |-- BQSR_example.table_addline.txt
+    |    |    |__ br_example.bam
+    |    |    
     |    |-- coverage_and_depth
-    |    |-- duplicates
-    |    |__ preprocessing.md  
+    |    |    |-- cov_example.txt
+    |    |    |-- depth_example.txt
+    |    |    |__ hist_example.txt
+    |    |    
+    |    |__ duplicates
+    |         |--md_example_metrics.txt
+    |         |__md_example.bam
+    |      
     |__ 5_Somatic_Var
-         |__ somatic_var.md
+         |__ sample.maf
+         |__ sample.vcf
 
 ```
 
@@ -82,6 +100,7 @@ This repository has the following organization:
 - [GATK (v.4.1.9.0)](https://github.com/broadinstitute/gatk/releases)
 - [Samtools (v.1.10)](https://sourceforge.net/projects/samtools/)
 - [R (v.3.4.2)](https://cran.r-project.org)
+    + [MAFtoos (v.2.6.0)](https://bioconductor.org/packages/release/bioc/html/maftools.html)
 
 ## References
 + Genomic Landscape of Non-Small Cell Lung Cancer in Smokers and Never-Smokers
