@@ -11,7 +11,7 @@ mv *.fai ./../data/
 
 # Do the alignment with the trimmed files.
 for i in ./../trimmed*R1.fastq;
-do bwa mem hg38.fasta $i ${i%1.fastq}2.fastq > aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
+do bwa mem ./../data/hg38.fasta $i ${i%1.fastq}2.fastq > aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
 done &
 
 mkdir ./../results/mapped

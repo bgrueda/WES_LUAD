@@ -5,9 +5,8 @@
 
 # Convert sam file to bam format in order to have a more efficient management.
 for i in ./../results/mapped/aln*;
-do samtools view -Sb $i > ${i%.sam}.bam 2>sb${i%.sam}.log | samtools sort ${i%.sam}.bam sort_${i%.sam}.bam 2>sort${i%.sam}.log;
+do samtools view -Sb $i > ./../results/mapped/${i%.sam}.bam 2>sb${i%.sam}.log | samtools sort ${i%.sam}.bam ./../results/mapped/sort_${i%.sam}.bam 2>sort${i%.sam}.log;
 done
-mv *.bam ./../results/mapped
 
 # Depth & Coverage
 mkdir ./../results/preprocessing
@@ -22,14 +21,13 @@ done
 
 # Mark duplicates in the bam files
 for i in ./../results/preprocessing/sort*.bam;
-do java -jar picard.jar MarkDuplicates I=$i O=md_$i M=metrics_$i.txt 2>md_${i%.bam}.log;
+do java -jar picard.jar MarkDuplicates I=$i O=./../results/preprocessing/md_$i M=./../results/preprocessing/metrics_$i.txt 2>md_${i%.bam}.log;
 done
-mv md_* *.txt ./../results/preprocessing
 
 #  Base Quality Score Recalibration
 # You could use the vcf file from the Broad Institute or another that you know, even you could use more than one.
 for i in ./../results/preprocessing/md_*;
-do gatk BaseRecalibrator -I $i -R hg38.fasta --known-sites snp_hg38.vcf -O ./../results/preprocessing/br_$i 2>md_${i%.txt}.log;
+do gatk BaseRecalibrator -I $i -R ./../data/hg38.fasta --known-sites ./../data/snp_hg38.vcf -O ./../results/preprocessing/br_$i 2>md_${i%.txt}.log;
 done
 
 # With this step, we are ready to continue to the variant calling step. Congratulations!
