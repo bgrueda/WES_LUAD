@@ -22,9 +22,6 @@ This image below shows the steps of the preprocessing and processing of the data
 This repository has the following organization:
 
 ```
-|--- archive
-|   |-- archive.md
-|
 |--- bin
 |   |-- 1_Quality.sh
 |   |-- 2_Correction.sh
@@ -38,9 +35,6 @@ This repository has the following organization:
 |  
 |--- figures
 |   |-- figures.md
-|
-|--- metadata
-|   |-- metadata.md
 |
 |___ results
     |-- 1_Quality
@@ -61,15 +55,11 @@ This repository has the following organization:
 
 **[Workflow_Tutorial.md](https://github.com/bgrueda/WES_LUAD/blob/main/Workflow_Tutorial.md)** This file contains all the information for the use of the scripts in this repository.  
 
-**[archive](/archive)**. This directory have all the non-ready scripts.
-
 **[bin](/bin)**. All the scripts needed for the analysis.
 
 **[data](/data)**. This contains all the links for the data files that I used for this workflow.
 
-**[figures](/figures)**. This directory contains all the figures that resulted from this analysis.
-
-**[metadata](/metadata)**. In this you can find all the tables, figures that are not results but are related to this analysis.
+**[figures](/figures)**. This directory contains all the images that are related or resulted from this analysis.
 
 **[results](/results)**. This directory contains all the results from the pipeline.
 
