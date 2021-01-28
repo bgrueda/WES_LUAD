@@ -6,15 +6,15 @@
 # Now, put all the fastq files with the raw data in the same directory.
 
 # Create a new one to put in the results.
-mkdir FastQC_Reports
+mkdir ./../results/FastQC_Reports
 
 # Run FastQC for the analysis
-for i in *.fastq;
+for i in ~/../data/*.fastq;
 do fastqc $i;
 done
 
 # Move your data to a different directory
-mv *.zip *.html FastQC_Reports/
+mv *.zip *.html ./../results/FastQC_Reports/
 
 # You need to examinate every one individually as is described on:
 # https://www.bioinformatics.babraham.ac.uk/projects/fastqc/

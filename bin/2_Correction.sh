@@ -11,15 +11,17 @@
 # CROP: 150 -> The number of bases to keep, from the start of the read.
 # HEADCROP:15 -> The number of bases to remove from the start of the read.
 
-
-for i in *R1.fastq;
+for i in ./../data/*R1.fastq;
 do java -jar /route/trimmomatic-0.39.jar PE -phred33 $i ${i%?.fastq}2.fastq trimmed_$i unpaired_$1 trimmed${i%?.fastq}2.fastq unpaired${i%?.fastq}2.fastq ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:10 SLIDINGWINDOW:4:25 MINLEN:50;
 done
 
+mkdir ./../results/trimmed
+mv trimmed* unpaired* ./../results/trimmed/
+
 # Then is needed to run Fastqc again in order to check the quality of the files after the cleanning.
 
-for i in trimmed*;
+for i in ./../results/trimmed/trimmed*;
 do fastqc $i;
 done
 
-mv *.zip *.html FastQC_Reports/
+mv *.zip *.html ./../results/FastQC_Reports/

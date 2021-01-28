@@ -6,9 +6,13 @@
 # It can be downloaded from: https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0/
 
 # Firstly we need to create an index
-bwa index hg38.fasta
+bwa index ./../data/hg38.fasta
+mv *.fai ./../data/
 
 # Do the alignment with the trimmed files.
-for i in trimmed*R1.fastq;
+for i in ./../trimmed*R1.fastq;
 do bwa mem hg38.fasta $i ${i%1.fastq}2.fastq > aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
 done &
+
+mkdir ./../results/mapped
+mv aln* ./../results/mapped
