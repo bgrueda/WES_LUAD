@@ -25,8 +25,14 @@ do java -jar picard.jar MarkDuplicates I=$i O=./../results/4_preprocessing/dupli
 done
 
 #  Base Quality Score Recalibration
-# You could use the vcf file from the Broad Institute or another that you know, even you could use more than one.
+
+# If your file does not have read groups in your file it is recommended to run the next command.
 for i in ./../results/4_preprocessing/md_*;
+do java -jar picard.jar AddOrReplaceReadGroups I=$i O=../results/4_preprocessing/rg_$i RGLB=1101 RGPL=ILLUMINA RGPU=unit1 RGSM=Tumor 2>readgroups.log;
+done
+
+# You could use the vcf file from the Broad Institute or another that you know, even you could use more than one.
+for i in ./../results/4_preprocessing/rg_*;
 do gatk BaseRecalibrator -I $i -R ./../data/hg38.fasta --known-sites ./../data/snp_hg38.vcf -O ./../results/4_preprocessing/BQSR/br_$i 2>md_${i%.txt}.log;
 done
 

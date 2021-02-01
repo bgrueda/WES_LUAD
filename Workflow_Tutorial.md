@@ -1,22 +1,24 @@
 # Workflow for the genomic variants identification
 
-This workflow allows to identify genomic variants (germline and somatic) with some easy following steps.
+This workflow allows to identify genomic variants (germline and somatic) with some easy following steps.  
+
+
 
 #### 1_Quality.sh
 
 We use **FastQC** for this first quality analysis of the *fasta* files (raw data).
 
 ```bash
-for i in *.fastq;
+for i in ~/../data/*.fastq;
 do fastqc $i;
-done
+done &
 ```
 
 once the report files were created, move them to a separate directory with:
 
 ```bash
-mkdir FastQC_Reports
-mv *.zip *.html FastQC_Reports/
+mkdir ./../results/1_Quality
+mv *.zip *.html ./../results/1_Quality/
 ```
 
 our report will contain some graphics with a colored signaling about:  
@@ -37,19 +39,34 @@ More details in: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
 ![Fastqc](https://github.com/bgrueda/WES_LUAD/blob/main/figures/Fastqc_ex.png)
 
-This is an example of a good quality report (Per base sequence quality)
+This is an example of a good quality report (Per base sequence quality). 
+
+
 
 #### 2_Correction.sh
 
 Once we have reviewed the detail of the quality of the reads, if necessary, we can make different types of corrections using **Trimmomatic**.
 
-```bash
-for i in *R1.fastq;
-do java -jar /route/trimmomatic-0.39.jar PE -phred33 $i ${i%?.fastq}2.fastq trimmed_$i unpaired_$1 trimmed${i%?.fastq}2.fastq unpaired${i%?.fastq}2.fastq ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:10 SLIDINGWINDOW:4:25 MINLEN:50;
-done
+```
+# This part coul change depending of the results of the fastQC
+# ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 -> Remove adapters
+# LEADING:3 -> Remove leading low quality or N bases (below quality 3)
+# TRAILING:3 -> Remove trailing low quality or N bases (below quality 3)
+# SLIDINGWINDOW:4:15 -> Scan the read with a 4-base wide sliding window, cutting when the average quality per base drops below 15
+# MINLEN:50 -> Drop reads below the 50 bases long.
+# CROP: 150 -> The number of bases to keep, from the start of the read.
+# HEADCROP:15 -> The number of bases to remove from the start of the read.
 ```
 
-The options should be chosen according to the state of the quality of the readings. It is highly recommended to check the changes made with a new fastqc analysis.  
+The options should be chosen according to the state of the quality of the readings. If all the files share the same failures, you can run in all together, but if is not the case, need to do it once al the time. 
+
+```bash
+for i in ./../data/*R1.fastq;
+do java -jar /route/trimmomatic-0.39.jar PE -phred33 $i ${i%?.fastq}2.fastq trimmed_$i unpaired_$1 trimmed${i%?.fastq}2.fastq unpaired${i%?.fastq}2.fastq ILLUMINACLIP:TruSeq3-PE-2.fa:2:30:10 SLIDINGWINDOW:4:25 MINLEN:50;
+done &
+```
+
+It is highly recommended to check the changes made with a new fastqc analysis.  
 
 
 
@@ -62,13 +79,26 @@ The Broad Institute's genomics public data is available in:
 https://console.cloud.google.com/storage/browser/genomics-public-data/resources/broad/hg38/v0;tab=objects?pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false
 
 ```bash
-bwa index hg38.fasta
-for i in trimmed*R1.fastq;
-do bwa mem hg38.fasta $i ${i%1.fastq}2.fastq > aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
+for i in ./../results/2_Correction/trimmed*R1.fastq;
+do bwa mem ./../data/hg38.fasta $i ${i%1.fastq}2.fastq > ./../results/3_Mapping/aln_${i%R1.fastq}.sam 2>bwa_${i%R1.fastq}.log;
 done &
 ```
 
 The output of this tool is a *SAM file*.
+
+```bash
+1	QNAME	String	Query template NAME
+2	FLAG	Int	bitwise FLAG
+3	RNAME	String	References sequence NAME
+4	POS	Int	1- based leftmost mapping POSition
+5	MAPQ	Int	MAPping Quality
+6	CIGAR	String	CIGAR string
+7	RNEXT	String	Ref. name of the mate/next read
+8	PNEXT	Int	Position of the mate/next read
+9	TLEN	Int	observed Template LENgth
+10	SEQ	String	segment SEQuence
+11	QUAL	String	ASCII of Phred-scaled base QUALity+33
+```
 
 
 
@@ -80,12 +110,15 @@ This step is divided in three parts:
 + Mark duplicates
 + BQSR
 
+  
+
 The first thing to do is changing the *SAM file* to its binary *BAM file* in order to have more efficient management.
 
 ```bash
-for i in aln*;
-do samtools view -Sb $i > ${i%.sam}.bam 2>sb${i%.sam}.log | samtools sort ${i%.sam}.bam sort_${i%.sam}.bam 2>sort${i%.sam}.log;
+for i in ./../results/3_Mapping/aln*;
+do samtools view -Sb $i > ./../results/mapped/${i%.sam}.bam 2>sb${i%.sam}.log | samtools sort ${i%.sam}.bam ./../results/mapped/sort_${i%.sam}.bam 2>sort${i%.sam}.log;
 done
+mv *.bam ./../results/3_Mapping/
 ```
 
 
@@ -95,10 +128,10 @@ done
 For this kind of analysis we use the **Samtools** suite.
 
 ```bash
-for i in *.bam;
-do samtools depth -a $i > ../results/depth/depth_${i%.bam}.txt 2>d_${i%.sam}.log;
-samtools coverage $i -o ../results/coverage/cov_${i%.bam}.txt 2>c_${i%.sam}.log;
-samtools coverage -m $i -o ../results/coverage/hist_${i%.bam}.txt 2>h_${i%.sam}.log;
+for i in ./../3_Mapping/*.bam;
+do samtools depth -a $i > ./../results/4_preprocessing/coverage_and_depth/depth_${i%.bam}.txt 2>d_${i%.sam}.log;
+samtools coverage $i -o ./../results/4_preprocessing/coverage_and_depth/cov_${i%.bam}.txt 2>c_${i%.sam}.log;
+samtools coverage -m $i -o ./../results/4_preprocessing/coverage_and_depth/hist_${i%.bam}.txt 2>h_${i%.sam}.log;
 done
 ```
 
@@ -195,8 +228,8 @@ dev.off()
 The duplicates are ...To identify the duplicates we use the tool *MarkDuplicates* from **Picard**.
 
 ```bash
-for i in sort*.bam;
-do java -jar picard.jar MarkDuplicates I=$i O=md_$i M=metrics_$i.txt 2>md_${i%.bam}.log;
+for i in ./../results/4_preprocessing/sort*.bam;
+do java -jar picard.jar MarkDuplicates I=$i O=./../results/4_preprocessing/duplicates/md_$i M=./../results/4_preprocessing/duplicates/metrics_$i.txt 2>md_${i%.bam}.log;
 done
 ```
 
@@ -204,25 +237,45 @@ done
 
 *c. BQSR (Base Quality Score Recalibration)*
 
+If your file does not have read groups in your file it is recommended to run the next command.
+
+```bash
+for i in ./../results/4_preprocessing/md_*;
+do java -jar picard.jar AddOrReplaceReadGroups I=$i O=../results/4_preprocessing/rg_$i RGLB=1101 RGPL=ILLUMINA RGPU=unit1 RGSM=Tumor 2>readgroups.log;
+done 
+```
+
 For this recalibration
 
 ```bash
-for i in md_*;
-do gatk BaseRecalibrator -I $i -R hg38.fasta --known-sites snp_hg38.vcf -O br_$i 2>md_${i%.txt}.log;
+for i in ./../results/4_preprocessing/md_*;
+do gatk BaseRecalibrator -I $i -R ./../data/hg38.fasta --known-sites ./../data/snp_hg38.vcf -O ./../results/4_preprocessing/BQSR/br_$i 2>md_${i%.txt}.log;
 done
 
-for i in br_*;
-do gatk ApplyBQSR -R hg38.fasta -I $i --bqsr-recal-file xBQSR_table_$i -O $i-BQSR.bam;
+for i in ./../results/4_preprocessing/br_*;
+do gatk ApplyBQSR -R ./../data/hg38.fasta -I $i --bqsr-recal-file ./../results/BQSR/BQSR_example.table -O ./../results/4_preprocessing/BQSR/BQSR.bam 2>abr_${i%.txt}.log;
 done
 ```
+
+At this time we have the files ready to continue with the variant calling.  
 
 
 
 #### 5_Somatic_Var.sh
 
+The somatic variants can be identified in two different forms: 
+
+a) Tumor with matched normal 
+
+b) Tumor-only mode
+
+
+
+For this analisis at this moment we are going to use the second, *Tumor-only mode*
+
 ```bash
-for i in BQSR*;
-do gatk Mutect2 -R hg38.fasta -I ${i%BQSR_} -O ${i%BQSR_}.vcf 2>Mut${i%BQSR_}.log;
+for i in ./../results/4_Preprocessing/BQSR*;
+do gatk Mutect2 -R ./../data/hg38.fasta -I $i -O ./../results/5_Somatic_Var/${i%BQSR_}.vcf 2>Mut${i%BQSR_}.log;
 done
 ```
 
@@ -235,8 +288,8 @@ done
 gatk FuncotatorDataSourceDownloader --somatic --validate-integrity --extract-after-download
 
 # Then do the annotation with an MAF file output
-for i in Mut*;
-do gatk Funcotator -R hg38.fasta -V $i -O $i.maf --output-file-format MAF --data-sources-path ~/metadata/dataSources --ref-version hg38;
+for i in ./../results/4_Preprocessing/Filt_*;
+do gatk Funcotator -R ./../data/hg38.fasta -V $i -O ./../results/5_Somatic_Var/$i.maf --output-file-format MAF --data-sources-path ./../data/SSources/ --ref-version hg38 2>Func$i.log;
 done
 
 ```

@@ -84,7 +84,7 @@ This repository has the following organization:
 ## Data specifications
 **Data files**
 1. The data that are needed for this kind of analysis are **fastq files** which are the result of sequencing of your samples (raw data).
-2. A reference genome version (GRCh38). This can be found in one of the links in *data* folder.
+2. A reference genome version (hg38). This can be found in one of the links in *data* folder.
 
 **Sample preparation requirements**
 + **DNA** samples

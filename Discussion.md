@@ -10,11 +10,17 @@ We present a pipeline based on **GATK** best practices with some other complemen
 
 ### About the results...
 
-This pipeline was probed with a single small sample (part of a complete lung adenocarcinoma sample sequenced). So the results obtained lack of a biological significant meaning.
+This pipeline was probed with a single small sample (part of a complete lung adenocarcinoma sample sequenced), then I ran it on our server with the entire sample, corroborating the proposed workflow. 
 
 In the current state of this pipeline, it is possible to arrive at the annotation of somatic genomic variants.
 
 ![](https://github.com/bgrueda/WES_LUAD/blob/main/figures/summary_vcf.jpeg)
+
+![](https://github.com/bgrueda/WES_LUAD/blob/main/figures/summary_server.jpeg)
+
+  The first image is the fragmented sample and the second is the complete sample result. 
+
+
 
 Nonetheless, when we confirm a set of the resulting variants with the IGV from the Broad Institute, we found that the tested ones already exists.  
 
