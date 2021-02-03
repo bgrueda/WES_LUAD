@@ -35,7 +35,6 @@ This repository has the following organization:
 |   |-- data.md
 |  
 |--- figures
-|   |-- figures.md
 |
 |___ results
     |-- 1_Quality
